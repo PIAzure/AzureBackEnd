@@ -1,3 +1,2 @@
 # AzureBackEnd
-# AzureFrontEnd
-# AzureFrontEnd
+    
