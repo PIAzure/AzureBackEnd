@@ -11,18 +11,25 @@ sudo apt install python3
 Para configurar um ambiente virtual utilize o seguinte comando
 
 ```bash
-   python3 -m venv venv
-   source ./venv/bin/activate
+   pip install virtualenv
+   virtualenv Azure
 ```
-Em seguida, baixe o conector do postgress.
+Em seguida, acesso o diretório.
 ```bash
-   pip install psycopg2 psycopg
+   cd  Azure/
 ```
-Em seguida, instale o Django e o Django REST Framework com o comando:
+
+Em seguida, ative o ambiente virtual:
 
 ```bash
-pip install django djangorestframework 
+   source ./bin/activate 
 ```
+
+Depois instale as dependências do projetos:
+```bash
+   pip install -r requeriment.txt 
+```
+
 Para rodar a aplicação, certifique-se de ter o Docker instalado, pois ele permitirá executar o PostgreSQL em um ambiente controlado, configurado de acordo com as especificações da aplicação. Use o comando a seguir para iniciar um contêiner PostgreSQL:
 
 ```bash
