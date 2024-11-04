@@ -1,8 +1,7 @@
 from apiazure.Modelo.User import User
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser,FileUploadParser
+from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 
 # Create your views here.
@@ -17,9 +16,32 @@ def post_user(request)->Response:
     return Response(data=user.data,status=HTTP_201_CREATED)
 
 @api_view(["GET"])
-def getalluser(request):
-    pass
-
+def getalluser(request)-> Response:
+    try:
+        user=User.objects.all()
+        users=Userseralizer(user,many=True)
+        return Response(data=users.data,status=HTTP_200_OK)
+    except:
+        return Response(data=[],status=HTTP_400_BAD_REQUEST)
+    
 @api_view(["UPDATE","GET","DELETE"])
-def getupdateuser():
-    pass
+def getupdateuser(request,pk):
+    if request.method=="UPDATE":
+        pass
+    elif request.method=="GET":
+        try:
+            user=User.objects.get(pk)
+            userseralizer=Userseralizer(user)
+            return Response(data=userseralizer.data,status=HTTP_200_OK)
+        except:
+            return Response(data={"msg":"not found user"},status=HTTP_400_BAD_REQUEST)
+    elif request.method=="DELETE":
+        try:
+            user=User.objects.get(id=pk)
+            userseralizer=Userseralizer(user)
+            user.delete()
+            return Response(data=userseralizer.data,status=HTTP_200_OK)
+        except:
+            return Response(data={"msg":"not delete user"},status=HTTP_200_OK)
+            
+            
