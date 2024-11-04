@@ -4,5 +4,5 @@ from apiazure.Modelo.User import User
 class Userseralizer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields="__all__"
+        fields= "__all__"
         
