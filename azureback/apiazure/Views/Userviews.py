@@ -25,19 +25,19 @@ def getalluser(request)-> Response:
         return Response(data=[],status=HTTP_400_BAD_REQUEST)
     
 @api_view(["UPDATE","GET","DELETE"])
-def getupdateuser(request,pk):
+def getupdateuser(request,primary_key):
     if request.method=="UPDATE":
         pass
     elif request.method=="GET":
         try:
-            user=User.objects.get(pk)
+            user=User.objects.get(primary_key)
             userseralizer=Userseralizer(user)
             return Response(data=userseralizer.data,status=HTTP_200_OK)
         except:
             return Response(data={"msg":"not found user"},status=HTTP_400_BAD_REQUEST)
     elif request.method=="DELETE":
         try:
-            user=User.objects.get(id=pk)
+            user=User.objects.get(id=primary_key)
             userseralizer=Userseralizer(user)
             user.delete()
             return Response(data=userseralizer.data,status=HTTP_200_OK)

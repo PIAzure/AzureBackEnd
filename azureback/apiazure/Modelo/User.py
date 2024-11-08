@@ -6,3 +6,4 @@ class User(models.Model):
     password=models.CharField(max_length=100)
     imagefield=models.ImageField(upload_to="images/",default=None)
     
+    
