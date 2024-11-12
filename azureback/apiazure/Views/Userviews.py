@@ -1,14 +1,16 @@
+from multiprocessing.managers import BaseManager
 from apiazure.Modelo.User import User
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from typing import Dict
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes
 from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 
 # Create your views here.
-def _get_tokens_for_user(user):
+def _get_tokens_for_user(user:User)->Dict[str,str]:
     refresh = RefreshToken.for_user(user)
     return {
         'refresh': str(refresh),
@@ -17,7 +19,7 @@ def _get_tokens_for_user(user):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def post_user(request)->Response:
-    user=Userseralizer(data=request.data)
+    user:Userseralizer=Userseralizer(data=request.data)
     if user.is_valid():
         user.save()
     else:
@@ -28,13 +30,13 @@ def post_user(request)->Response:
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def authuser(request):
-    name=request.data.get("email")
-    password=request.data.get("password")
+    name:str=request.data.get("email")
+    password:str=request.data.get("password")
     
-    user=User.objects.get(pk=name)
-    token=_get_tokens_for_user(user=user)
+    user:User=User.objects.get(pk=name)
+    token:dict[str,str]=_get_tokens_for_user(user=user)
     
-    userserelizer=Userseralizer(user)
+    userserelizer:Userseralizer=Userseralizer(user)
     return Response(data={
         "Token":token,
         "user":userserelizer.data
@@ -44,7 +46,7 @@ def authuser(request):
 @api_view(["GET"])
 def getalluser(request)-> Response:
     try:
-        user=User.objects.all()
+        user:BaseManager[User]=User.objects.all()
         users=Userseralizer(user,many=True)
         return Response(data=users.data,status=HTTP_200_OK)
     except:
