@@ -1,8 +1,11 @@
 from rest_framework import serializers
-from apiazure.Modelo.User import User
+from apiazure.models import User
 
 class Userseralizer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields= "__all__"
+        fields= ["email","name",
+                 "password","isadmin",
+                 "imagefield"]
+
         

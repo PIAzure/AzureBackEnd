@@ -1,5 +1,5 @@
 from multiprocessing.managers import BaseManager
-from apiazure.Modelo.User import User
+from apiazure.models import User
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 
 # Create your views here.
-def _get_tokens_for_user(user)->Dict[str,str]:
+def _get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
     return {
         'refresh': str(refresh),
@@ -34,7 +34,7 @@ def authuser(request):
     name:str=request.data.get("email")
     password:str=request.data.get("password")
     
-    user:User=User.objects.get(pk=name)
+    user=User.objects.get(pk=name)
     if(user.password!=password) :
         return Response(data={"msg":"not match password"},status=HTTP_400_BAD_REQUEST)
     

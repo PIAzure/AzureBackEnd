@@ -33,11 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SIMPLE_JWT = {
-    'USER_ID_FIELD': 'email',  # Use o campo correto aqui
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=9999),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-}
+
 
 
 # Application definition
@@ -73,6 +69,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+}
+
+
+AUTH_USER_MODEL="apiazure.User"
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'email',  # Use o campo correto aqui
 }
 
 TEMPLATES = [
