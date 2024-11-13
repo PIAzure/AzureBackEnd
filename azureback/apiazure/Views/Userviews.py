@@ -10,12 +10,13 @@ from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 
 # Create your views here.
-def _get_tokens_for_user(user:User)->Dict[str,str]:
+def _get_tokens_for_user(user)->Dict[str,str]:
     refresh = RefreshToken.for_user(user)
     return {
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def post_user(request)->Response:
@@ -34,7 +35,10 @@ def authuser(request):
     password:str=request.data.get("password")
     
     user:User=User.objects.get(pk=name)
-    token:dict[str,str]=_get_tokens_for_user(user=user)
+    if(user.password!=password) :
+        return Response(data={"msg":"not match password"},status=HTTP_400_BAD_REQUEST)
+    
+    token:Dict[str,str]=_get_tokens_for_user(user=user)
     
     userserelizer:Userseralizer=Userseralizer(user)
     return Response(data={
@@ -46,7 +50,7 @@ def authuser(request):
 @api_view(["GET"])
 def getalluser(request)-> Response:
     try:
-        user:BaseManager[User]=User.objects.all()
+        user=User.objects.all()
         users=Userseralizer(user,many=True)
         return Response(data=users.data,status=HTTP_200_OK)
     except:

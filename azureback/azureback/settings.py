@@ -35,7 +35,10 @@ ALLOWED_HOSTS = []
 
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'email',  # Use o campo correto aqui
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=9999),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
 
 # Application definition
 
