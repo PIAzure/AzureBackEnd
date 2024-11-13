@@ -4,8 +4,9 @@ from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from typing import Dict
+from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, parser_classes
 from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 
@@ -56,12 +57,23 @@ def getalluser(request)-> Response:
     except:
         return Response(data=[],status=HTTP_400_BAD_REQUEST)
     
-@api_view(["PATCH","GET","DELETE","PUT"])
+@api_view(["PUT","GET","DELETE"])
+@permission_classes([AllowAny])
+@parser_classes([MultiPartParser, FormParser])
 def getupdateuser(request,primary_key):
-    if request.method=="PACTH":
-        pass
     if request.method=="PUT":
-        pass
+        user=User.objects.get(pk=primary_key)
+        data = request.data.copy()
+        files = request.FILES  # Images and other binary files
+
+        if "imagefield" in files:
+            data["imagefield"] = files["imagefield"]
+    
+        user_serializer = Userseralizer(user, data=data, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+        return Response(data=user_serializer.data,status=HTTP_200_OK)
+        
     elif request.method=="GET":
         try:
             user=User.objects.get(pk=primary_key)
