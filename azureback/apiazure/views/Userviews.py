@@ -21,7 +21,9 @@ def _get_tokens_for_user(user):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def post_user(request)->Response:
-    user:Userseralizer=Userseralizer(data=request.data)
+    data=request.data.copy()
+    data["isactive"]=True
+    user:Userseralizer=Userseralizer(data=data)
     if user.is_valid():
         user.save()
     else:
@@ -32,14 +34,19 @@ def post_user(request)->Response:
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def authuser(request):
+    
     name:str=request.data.get("email")
     password:str=request.data.get("password")
     
     user=User.objects.get(pk=name)
-    if(user.password!=password) :
+    
+    if user.isactive==False:
+        return Response(data={"msg":"user not found"})
+    
+    if user.password!=password:
         return Response(data={"msg":"not match password"},status=HTTP_400_BAD_REQUEST)
     
-    token:Dict[str,str]=_get_tokens_for_user(user=user)
+    token=_get_tokens_for_user(user=user)
     
     userserelizer:Userseralizer=Userseralizer(user)
     return Response(data={
@@ -77,6 +84,8 @@ def getupdateuser(request,primary_key):
     elif request.method=="GET":
         try:
             user=User.objects.get(pk=primary_key)
+            if user.isactive==False: 
+                raise Exception
             userseralizer=Userseralizer(user)
             return Response(data=userseralizer.data,status=HTTP_200_OK)
         except:
@@ -84,10 +93,12 @@ def getupdateuser(request,primary_key):
     elif request.method=="DELETE":
         try:
             user=User.objects.get(pk=primary_key)
-            userseralizer=Userseralizer(user)
-            user.delete()
-            return Response(data=userseralizer.data,status=HTTP_200_OK)
-        except:
+            print()
+            user.isactive=False
+            print("calvo:")
+            return Response(data={"msg":"delete user"},status=HTTP_200_OK)
+        except Exception as e:
+            print(e)
             return Response(data={"msg":"not delete user"},status=HTTP_200_OK)
             
             
