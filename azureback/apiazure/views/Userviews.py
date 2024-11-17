@@ -1,4 +1,3 @@
-from multiprocessing.managers import BaseManager
 from apiazure.models import User
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
@@ -93,10 +92,10 @@ def getupdateuser(request,primary_key):
     elif request.method=="DELETE":
         try:
             user=User.objects.get(pk=primary_key)
-            print()
-            user.isactive=False
-            print("calvo:")
-            return Response(data={"msg":"delete user"},status=HTTP_200_OK)
+            userseralizer=Userseralizer(user,data={"isactive":False},partial=True)
+            if userseralizer.is_valid():
+                userseralizer.save()
+                return Response(data={"msg":"delete user"},status=HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response(data={"msg":"not delete user"},status=HTTP_200_OK)
