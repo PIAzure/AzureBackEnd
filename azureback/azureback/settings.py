@@ -76,7 +76,9 @@ APPEND_SLASH=False
 AUTH_USER_MODEL="apiazure.User"
 
 SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token válido por 1 dia
     'USER_ID_FIELD': 'email',  # Use o campo correto aqui
+    
 }
 
 TEMPLATES = [
