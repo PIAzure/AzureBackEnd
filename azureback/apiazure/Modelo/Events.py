@@ -1,6 +1,9 @@
 from django.db import models
+from apiazure.Modelo.Organization import Organization
 
 class Event(models.Model):
+    id=models.AutoField(primary_key=True)
+    organizator=models.ForeignKey(Organization,null=True,on_delete=models.CASCADE)
     timeDate= models.DateTimeField()
     description = models.TextField()
     location = models.CharField(max_length=255)
