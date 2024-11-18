@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from apiazure.Views.Eventsview import EventoViewSet
+from azureback.apiazure.views.Eventsview import EventoViewSet
 from apiazure.views.Organizationviews import OrganizationListView, OrganizationViewDetail
 
 
