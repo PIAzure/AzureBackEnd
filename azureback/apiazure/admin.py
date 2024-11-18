@@ -1,7 +1,7 @@
 from django.contrib import admin
-from apiazure.Modelo.User import User
+from apiazure.models import User
 from apiazure.Modelo.Events import Event 
-
+from  apiazure.Modelo.Organization import Organization
 
 # Register your models here.
 admin.site.register(User)
