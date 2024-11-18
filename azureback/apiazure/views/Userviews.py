@@ -57,7 +57,7 @@ def authuser(request):
 @api_view(["GET"])
 def getalluser(request)-> Response:
     try:
-        user=User.objects.all()
+        user=User.objects.all().filter(isactive=True)
         users=Userseralizer(user,many=True)
         return Response(data=users.data,status=HTTP_200_OK)
     except:
