@@ -18,15 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.routers import DefaultRouter
-from azureback.apiazure.views.Eventsview import EventoViewSet
 from apiazure.views.Organizationviews import OrganizationListView, OrganizationViewDetail
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("users/",include("apiazure.Urls.Userurls")),
-    path('events/', include(router.urls)),
+    path('events/', include("apiazure.Urls.EventsUrl")),
     path('organization/',OrganizationListView.as_view()),
     path('organization/<str:primary_key>',OrganizationViewDetail.as_view())    
 ]
