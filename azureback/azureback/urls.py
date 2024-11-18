@@ -21,8 +21,6 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from apiazure.Views.Eventsview import EventoViewSet
 
-router = DefaultRouter()
-router.register(r'events', EventoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
