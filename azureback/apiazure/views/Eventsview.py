@@ -1,13 +1,19 @@
 from apiazure.Modelo.Events import Event
 from apiazure.Seralizer.Eventsseralizer import EventSerializer
+from apiazure.Modelo.Organization import Organization
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def post_event(request) -> Response:
-    event = EventSerializer(data=request.data)
-    if event.is_valid():
+    data=request.data
+    event = EventSerializer(data=data)
+    calvo=event.is_valid()
+    print(calvo)
+    if calvo:
         event.save()
         return Response(data=event.data, status=HTTP_201_CREATED)
     else:
