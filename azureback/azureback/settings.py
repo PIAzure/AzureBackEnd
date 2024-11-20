@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("DJANGO_SECURE_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["5cdc-2804-828-f230-1639-62b2-a99c-d2bd-5b45.ngrok-free.app"]
 
 
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    'apiazure',
+    'apiazure.apps.ApiazureConfig',
     'django_seed'
 ]
 
