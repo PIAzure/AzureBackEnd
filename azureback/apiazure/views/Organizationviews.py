@@ -5,6 +5,7 @@ from apiazure.Seralizer.OrganizationSeralizer import OrganizationSeralizer
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from apiazure.Modelo.Organization import Organization
+
 class OrganizationListView(APIView):
     
     """
@@ -24,7 +25,7 @@ class OrganizationListView(APIView):
         
         if organizationseralizer.is_valid():
             organizationseralizer.save()
-        return Response(data=organizationseralizer.data,status=Status.HTTP_201_CREATED)
+        return Response(data={"user":userseralizer.data,"count":0},status=Status.HTTP_201_CREATED)
     
     def get(self,request):
         organization=Organization.objects.all()
