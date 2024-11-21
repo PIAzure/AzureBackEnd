@@ -19,9 +19,18 @@ def post_event(request) -> Response:
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_all_events(request,email) -> Response:
-        events = Event.objects.filter(organizator_id=email)
-        events_serializer = EventSerializer(events, many=True)
-        return Response(data=events_serializer.data, status=HTTP_200_OK)
+    events = Event.objects.filter(organizator_id=email)
+    events_serializer = EventSerializer(events, many=True)
+    return Response(data=events_serializer.data, status=HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_all_events_admin(request) -> Response:
+    events = Event.objects.all()
+    events_serializer = EventSerializer(events, many=True)
+    print(events_serializer.data)
+    return Response(data=events_serializer.data, status=HTTP_200_OK)
+
 
 @api_view(["GET", "PUT", "DELETE"])
 @permission_classes([AllowAny])
