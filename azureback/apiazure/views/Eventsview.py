@@ -9,9 +9,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_RE
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def post_event(request) -> Response:
-    data=request.data
-    event = EventSerializer(data=data)
-    
+    event = EventSerializer(data=request.data)
     if event.is_valid():
         event.save()
         return Response(data=event.data, status=HTTP_201_CREATED)
