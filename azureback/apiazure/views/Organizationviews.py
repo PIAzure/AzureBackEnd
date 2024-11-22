@@ -13,7 +13,6 @@ class OrganizationListView(APIView):
     """
     
     permission_classes=[AllowAny]
-    
     def post(self,request):
         data=request.data.copy()
         data["isactive"]=True
@@ -30,7 +29,8 @@ class OrganizationListView(APIView):
     def get(self,request):
         organization=Organization.objects.all()
         organizationall=OrganizationSeralizer(organization,many=True)
-        return Response(data=organizationall.data,status=Status.HTTP_200_OK)
+        data=filter(lambda x:x["users"]["isactive"]==True,organizationall.data)
+        return Response(data=data,status=Status.HTTP_200_OK)
     
 
 class OrganizationViewDetail(APIView):
