@@ -29,7 +29,7 @@ class OrganizationListView(APIView):
     def get(self,request):
         organization=Organization.objects.all()
         organizationall=OrganizationSeralizer(organization,many=True)
-        return Response(data=data,status=Status.HTTP_200_OK)
+        return Response(data=organizationall.data,status=Status.HTTP_200_OK)
     
 
 class OrganizationViewDetail(APIView):
