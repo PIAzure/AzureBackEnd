@@ -1,9 +1,7 @@
 import apiazure.views.Userviews as func
 from rest_framework.urls import path
 urlpatterns = [
-    path('',func.post_user,name="criar usuário"),
-    path('all/',func.getalluser,name="pegar todos os users"),
-    path("<str:primary_key>/",func.getupdateuser,name="pegar,atualizar e deletar"),
-    path("token",func.authuser,name="autenticar usuário"),
-
+    path('',func.UserListDetail.as_view(),name="criar usuário e pegar todos os usuarios"),
+    path("<str:primary_key>/",func.UserDetail.as_view(),name="pegar,atualizar e deletar"),
+    path("auth/token/",func.UserAdminDetail.as_view(),name="autenticar usuário"),
 ]

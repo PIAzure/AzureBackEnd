@@ -1,5 +1,6 @@
 from apiazure.Modelo.Events import Event
 from apiazure.Seralizer.Eventsseralizer import EventSerializer
+from apiazure.Modelo.Organization import Organization
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -10,9 +11,14 @@ class EventDetailListPost(APIView):
     permission_classes=[AllowAny]
     
     def post(self,request) -> Response:
+        copy=request.data.copy()
         event = EventSerializer(data=request.data)
+        
         if event.is_valid():
             event.save()
+            organization=Organization.objects.get(user_id=copy["organizator"])
+            organization.count+=1
+            organization.save()
             return Response(data=event.data, status=HTTP_201_CREATED)
         else:
             return Response(data={"msg": "BAD REQUEST"}, status=HTTP_400_BAD_REQUEST)
