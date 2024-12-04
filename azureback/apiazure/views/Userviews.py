@@ -3,6 +3,8 @@ from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from typing import Dict
+from django.db.models import Subquery
+from apiazure.Modelo.Organization import Organization
 from rest_framework.views import APIView 
 from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import AllowAny
@@ -91,8 +93,10 @@ class UserListDetail(APIView):
 
     def get(self,request)-> Response:
         try:
-            user=User.objects.all().filter(isactive=True)
-            users=Userseralizer(user,many=True)
+            organization=Organization.objects.values("user_id")
+            userorganization=User.objects.all().filter(isactive=True,email__in=Subquery(organization))
+            usertrue=User.objects.all().difference(userorganization)
+            users=Userseralizer(usertrue,many=True)
             return Response(data=users.data,status=HTTP_200_OK)
         except:
             return Response(data=[],status=HTTP_400_BAD_REQUEST)
