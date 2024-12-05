@@ -27,7 +27,7 @@ class OrganizationListView(APIView):
         return Response(data={"user":userseralizer.data,"count":0},status=Status.HTTP_201_CREATED)
     
     def get(self,request):
-        organization=Organization.objects.all()
+        organization=Organization.objects.all().intersection()
         organizationall=OrganizationSeralizer(organization,many=True)
         return Response(data=organizationall.data,status=Status.HTTP_200_OK)
     

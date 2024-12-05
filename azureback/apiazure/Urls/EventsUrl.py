@@ -1,8 +1,8 @@
-import apiazure.views.Eventsview as func
+from apiazure.views.Eventsview import EventDetailListPost, EventAdminDetail, EventDetail,EventDetailListGet
 from rest_framework.urls import path
 urlpatterns = [
-    path('',func.post_event,name="criar usuário"),
-    path('<str:email>/',func.get_all_events,name="pegar todos os users"),
-    path("event/<int:primary_key>/",func.get_update_delete_event,name="pegar,atualizar e deletar"),
-    path("admin/all/",func.get_all_events_admin,name="pegar todos os eventos cadastrados")
+    path('',EventDetailListPost.as_view(),name="criar usuário"),
+    path('<str:email>/',EventDetailListGet.as_view(),name="pegar todos os users"),
+    path("event/<int:primary_key>/",EventDetail.as_view(),name="pegar,atualizar e deletar"),
+    path("admin/all/",EventAdminDetail.as_view(),name="pegar todos os eventos cadastrados")
 ]

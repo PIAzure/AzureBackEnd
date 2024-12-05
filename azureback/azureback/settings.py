@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'apiazure.apps.ApiazureConfig',
-    'django_seed'
 ]
 
 MIDDLEWARE = [
