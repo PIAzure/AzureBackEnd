@@ -33,14 +33,18 @@ class EventDetailListGet(APIView):
         return Response(data=events_serializer.data, status=HTTP_200_OK)
         
 class EventAdminDetail(APIView):
+    
     permission_classes=[AllowAny]
+    
     def get(self,request) -> Response:
         events = Event.objects.all()
         events_serializer = EventSerializer(events, many=True)
         return Response(data=events_serializer.data, status=HTTP_200_OK)
 
 class EventDetail(APIView):
+    
     permission_classes=[AllowAny]
+    
     def _get_object(self,primary_key)->(Event|Response):
         try:
             event = Event.objects.get(pk=primary_key)
