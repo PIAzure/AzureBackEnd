@@ -6,10 +6,10 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields=["description",
                 "location",
-                "timeDate",
+                "begin",
                 "banner",
                 "organizator",
-                "id",
+                "id","end",
                 "max_particpant"]   
         # Inclui todos os campos no JSON da API
 
