@@ -2,7 +2,6 @@
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin
 from django.db import models
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = 'email'

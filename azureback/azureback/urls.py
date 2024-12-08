@@ -19,12 +19,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("users/",include("apiazure.Urls.Userurls")),
     path('events/', include("apiazure.Urls.EventsUrl")),
-    path('',include("apiazure.Urls.OrganizationUrl")),    
+    path('',include("apiazure.Urls.OrganizationUrl")),
+    path('participant',include("apiazure.Urls.ParticipantUrl")),
+    path("invite",include("apiazure.Urls.InviteUrl"))    
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) 
