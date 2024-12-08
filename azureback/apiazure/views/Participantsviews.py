@@ -35,7 +35,6 @@ class ParticipantsDetailsPost(APIView):
         copy=request.data.copy()
         participant=ParticipantsSeralizer(data=copy)
         event=Event.objects.get(id=copy["event"])
-        print(participant.is_valid())
         if not participant.is_valid(): 
             return Response(data=participant.errors,status=status.HTTP_400_BAD_REQUEST)
         participant.save()
