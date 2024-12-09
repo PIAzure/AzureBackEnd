@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
                 "begin",
                 "banner",
                 "organizator",
-                "id","end",
+                "id","end","max_voluntary_per_horary",
                 "max_particpant"]   
         # Inclui todos os campos no JSON da API
 

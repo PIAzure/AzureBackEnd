@@ -12,12 +12,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'azureback.settings')
 django.setup()
 
 # Agora você pode importar os modelos e trabalhar normalmente
-from apiazure.Modelo.Horario import Horary
-from apiazure.Modelo.Voluntary import Voluntary
-from apiazure.models import User
+from apiazure.views.Eventsview import EventDetailListPost
+from apiazure.Modelo.Events import Event
+from apiazure.Modelo.Scale import Scale
 def main():
-    Horary.objects.create(datetime="2024-11-20T13:24:00Z",max_voluntary_scale=10)
-    horatio1=Horary.objects.get(id=7)
-    print(horatio1.voluntarys)
+    event=Event.objects.get(id=1)
+    scale=Scale.objects.all()
+    
 if __name__ == "__main__":
     main()

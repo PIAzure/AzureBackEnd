@@ -15,7 +15,7 @@ class VoluntaryDetailsDelete(APIView):
         voluntary.delete()
         return Response(data={"msg":"voluntary leave scale"})
     
-class ParticipantsDetailsPost(APIView):
+class VoluntarysDetailsPost(APIView):
     
     permission_classes=[permissions.AllowAny]
     
