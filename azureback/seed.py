@@ -17,7 +17,8 @@ from apiazure.Modelo.Events import Event
 from apiazure.Modelo.Scale import Scale
 def main():
     event=Event.objects.get(id=1)
-    scale=Scale.objects.all()
+    scale=Scale.objects.select_related("horarys").filter(id=1)
+    print(scale.values())
     
 if __name__ == "__main__":
     main()

@@ -25,7 +25,8 @@ urlpatterns = [
     path('events/', include("apiazure.Urls.EventsUrl")),
     path('',include("apiazure.Urls.OrganizationUrl")),
     path('participant',include("apiazure.Urls.ParticipantUrl")),
-    path("invite",include("apiazure.Urls.InviteUrl"))    
+    path("invite",include("apiazure.Urls.InviteUrl")),
+    path("scale",include("apiazure.Urls.ScaleUrls"))
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) 
