@@ -34,6 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["127.0.0.1","5ccb-200-134-81-82.ngrok-free.app","'localhost"]
 
 
+USE_TZ = False
 
 
 # Application definition

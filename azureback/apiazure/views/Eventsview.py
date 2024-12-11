@@ -4,11 +4,22 @@ from apiazure.Modelo.Organization import Organization
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from datetime import datetime , timedelta
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
-
+from apiazure.Modelo.Scale import Scale
+from apiazure.Modelo.Horario import Horary
 class EventDetailListPost(APIView):
     
     permission_classes=[AllowAny]
+    def __create_scale_none(self,event:Event):
+        begindatetime:datetime=datetime.strptime(event.begin.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ")
+        enddatetieme:datetime=datetime.strptime(event.end.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ")
+        scale=Scale.objects.create(event=event)
+        while(begindatetime<enddatetieme):
+            horary=Horary.objects.create(datetime=begindatetime.isoformat().replace('+00:00', 'Z'),max_voluntary_scale=event.max_voluntary_per_horary)
+            scale.horarys.add(horary)
+            begindatetime+=timedelta(hours=1)
+        scale.save()
     
     def post(self,request) -> Response:
         copy=request.data.copy()
@@ -16,9 +27,12 @@ class EventDetailListPost(APIView):
         
         if event.is_valid():
             event.save()
+            eventid=event.data["id"]
             organization=Organization.objects.get(user_id=copy["organizator"])
             organization.count+=1
             organization.save()
+            eventquery=Event.objects.get(id=eventid)
+            self.__create_scale_none(event=eventquery)
             return Response(data=event.data, status=HTTP_201_CREATED)
         else:
             return Response(data={"msg": "BAD REQUEST"}, status=HTTP_400_BAD_REQUEST)
