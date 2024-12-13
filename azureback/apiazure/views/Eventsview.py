@@ -41,7 +41,7 @@ class EventDetailListGet(APIView):
         
     permission_classes=[AllowAny]
     
-    def get(self,email) -> Response:
+    def get(self,request,email) -> Response:
         events = Event.objects.filter(organizator_id=email)
         events_serializer = EventSerializer(events, many=True)
         return Response(data=events_serializer.data, status=HTTP_200_OK)

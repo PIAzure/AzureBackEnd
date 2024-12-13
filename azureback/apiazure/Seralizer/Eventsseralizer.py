@@ -11,7 +11,9 @@ class EventSerializer(serializers.ModelSerializer):
                 "bscale",
                 "banner",
                 "organizator",
-                "id","end","max_voluntary_per_horary",
+                "id",
+                "end",
+                "max_voluntary_per_horary",
                 "max_particpant"]   
         # Inclui todos os campos no JSON da API
 
