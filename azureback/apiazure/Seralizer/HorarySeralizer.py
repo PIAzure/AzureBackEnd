@@ -5,4 +5,4 @@ class HorarySeralizer(serializers.ModelSerializer):
     voluntarys=VoluntarySeralizer(many=True)
     class Meta:
         model=Horary
-        fields=["id","datetime","voluntarys"]
+        fields=["id","datetime","voluntarys","max_voluntary_scale"]

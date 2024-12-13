@@ -6,17 +6,25 @@ from apiazure.models import User
 from apiazure.Modelo.Voluntary import Voluntary
 import rest_framework.status  as status
 from apiazure.Modelo.Horario import Horary
+from datetime import datetime
 import rest_framework.permissions as permission
 
 class ScaleDetailsList(APIView):
     
     permission_classes=[permission.AllowAny]
     
-    def get(self,request,eventid):
-        scale=Scale.objects.filter(id=eventid)
+    def delete(self,request,id):
+        voluntary=Voluntary.objects.get(id=id)
+        voluntary.delete()
+        return Response(data={"msg":"leave horary"})
+    
+    def get(self,request,id):
+        scale=Scale.objects.filter(id=id)
         scaleseralizer=ScaleSeralizer(scale,many=True)
-        print(scaleseralizer.data)
-        return Response(data=scaleseralizer.data,status=status.HTTP_200_OK)
+        copy=scaleseralizer.data.copy()
+        for horary in copy:
+            horary["horarys"]=sorted(horary["horarys"],key=lambda x:datetime.strptime(x["datetime"], "%Y-%m-%dT%H:%M:%SZ"))
+        return Response(data=copy,status=status.HTTP_200_OK)
     
 
 class ScaleDetailsDelete(APIView):

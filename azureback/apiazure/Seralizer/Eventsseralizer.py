@@ -6,7 +6,9 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields=["description",
                 "location",
+                "escale",
                 "begin",
+                "bscale",
                 "banner",
                 "organizator",
                 "id","end","max_voluntary_per_horary",

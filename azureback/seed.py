@@ -11,8 +11,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'azureback.settings')
 # Inicializa o Django
 django.setup()
 
-# Agora você pode importar os modelos e trabalhar normalmente
-from apiazure.views.Eventsview import EventDetailListPost
 from apiazure.Modelo.Events import Event
 from apiazure.Modelo.Scale import Scale
 def main():
