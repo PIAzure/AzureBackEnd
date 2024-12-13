@@ -22,8 +22,8 @@ class ParticipantsDetailsDelete(APIView):
     
     def delete(self,request,id_participant):   
         participant=Participants.objects.get(id=id_participant)
+        event=Event.objects.get(id=participant.event.id)
         participant.delete()
-        event=Event.objects.get(id=participant.id)
         event.max_particpant+=1
         event.save()
         return Response(data={"msg":"leave event"})
