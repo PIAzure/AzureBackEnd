@@ -4,7 +4,7 @@ from apiazure.Modelo.Voluntary import Voluntary
 from apiazure.Seralizer.Userseralizer import Userseralizer
 
 class VoluntarySeralizer(serializers.ModelSerializer):
-    users=Userseralizer(source="uservoluntary",read_only=True)
+    user=Userseralizer()
     class Meta:
         model=Voluntary
-        fields=["users","id"]
+        fields=["id","user"]
