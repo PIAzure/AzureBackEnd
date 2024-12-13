@@ -4,6 +4,7 @@ from rest_framework.response import Response
 import rest_framework.status as status
 import rest_framework.permissions as permissions
 from apiazure.Modelo.Participants import Participants
+from apiazure.models import User
 from apiazure.Seralizer.ParticipantsSeralizer import ParticipantsSeralizer
 
 class ParticipantsDetailsGet(APIView):
@@ -27,6 +28,15 @@ class ParticipantsDetailsDelete(APIView):
         event.save()
         return Response(data={"msg":"leave event"})
     
+class ParticipantDetailGetEmail(APIView):
+    permission_classes=[permissions.AllowAny]
+    
+    def get(self,request,email):
+        user=User.objects.get(email=email)
+        participants=Participants.objects.filter(user=user)
+        print(participants.values())
+        participantsseralizer=ParticipantsSeralizer(participants,many=True)
+        return Response(data=participantsseralizer.data,status=status.HTTP_200_OK)
 class ParticipantsDetailsPost(APIView):
     
     permission_classes=[permissions.AllowAny]
