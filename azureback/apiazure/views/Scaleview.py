@@ -13,10 +13,6 @@ class ScaleDetailsList(APIView):
     
     permission_classes=[permission.AllowAny]
     
-    def delete(self,request,id):
-        voluntary=Voluntary.objects.get(id=id)
-        voluntary.delete()
-        return Response(data={"msg":"leave horary"})
     
     def get(self,request,id):
         scale=Scale.objects.filter(id=id)
@@ -26,15 +22,28 @@ class ScaleDetailsList(APIView):
             horary["horarys"]=sorted(horary["horarys"],key=lambda x:datetime.strptime(x["datetime"], "%Y-%m-%dT%H:%M:%SZ"))
         return Response(data=copy,status=status.HTTP_200_OK)
     
-
+class ScaleDetailVoluntary(APIView):
+    permission_classes=[permission.AllowAny]
+    
+    def delete(self,request,horaryid,voluntaryid):
+        voluntary=Voluntary.objects.get(id=voluntaryid)
+        horary=Horary.objects.get(id=horaryid)
+        horary.max_voluntary_scale+=1
+        horary.save()
+        voluntary.delete()
+        return Response(data={"msg":"leave horary"})
 class ScaleDetailsDelete(APIView):
     
     permission_classes=[permission.AllowAny]
+    def delete(self,request,horaryid,id):
+        voluntary=Voluntary.objects.get(id=id)
+        voluntary.delete()
+        return Response(data={"msg":"leave horary"})
     
     def post(self,request,horaryid,email):
         horary=Horary.objects.get(id=horaryid)
         user=User.objects.get(email=email)
-        voluntary=Voluntary.objects.create(user=user)
+        voluntary=Voluntary.objects.create(user=user,)
         horary.max_voluntary_scale-=1
         horary.add_voluntary(voluntary=voluntary)
         horary.save()

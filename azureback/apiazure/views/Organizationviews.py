@@ -5,7 +5,7 @@ from apiazure.Seralizer.OrganizationSeralizer import OrganizationSeralizer
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from apiazure.Modelo.Organization import Organization
-
+from apiazure.utils import passwordcryptgraf
 class OrganizationListView(APIView):
     
     """
@@ -29,6 +29,9 @@ class OrganizationListView(APIView):
     def get(self,request):
         organization=Organization.objects.all().intersection()
         organizationall=OrganizationSeralizer(organization,many=True)
+        copy=organizationall.data.copy()
+        for i in copy:
+            i["users"]["password"]=passwordcryptgraf(i["users"]["password"])
         return Response(data=organizationall.data,status=Status.HTTP_200_OK)
     
 
@@ -43,4 +46,6 @@ class OrganizationViewDetail(APIView):
         organizationseralizer=OrganizationSeralizer(organization)
         if organizationseralizer.data["users"]["isactive"]==False:
             return Response(data={"msg":"user not found"},status=Status.HTTP_404_NOT_FOUND)
+        copy=organizationseralizer.data.copy()
+        copy["users"]["password"]=passwordcryptgraf(copy["users"]["password"])
         return Response(data=organizationseralizer.data,status=Status.HTTP_200_OK)

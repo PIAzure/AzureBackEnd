@@ -34,7 +34,6 @@ class ParticipantDetailGetEmail(APIView):
     def get(self,request,email):
         user=User.objects.get(email=email)
         participants=Participants.objects.filter(user=user)
-        print(participants.values())
         participantsseralizer=ParticipantsSeralizer(participants,many=True)
         return Response(data=participantsseralizer.data,status=status.HTTP_200_OK)
 class ParticipantsDetailsPost(APIView):

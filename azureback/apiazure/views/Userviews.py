@@ -2,15 +2,12 @@ from apiazure.models import User
 from apiazure.Seralizer.Userseralizer import Userseralizer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from typing import Dict
 from django.db.models import Subquery
 from apiazure.Modelo.Organization import Organization
 from rest_framework.views import APIView 
-from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import AllowAny
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED,HTTP_400_BAD_REQUEST
-
-
+from apiazure.utils import passwordcryptgraf
 class UserDetail(APIView):
     
     def get(self,request,primary_key):
@@ -19,7 +16,9 @@ class UserDetail(APIView):
             if user.isactive==False: 
                 raise Exception
             userseralizer=Userseralizer(user)
-            return Response(data=userseralizer.data,status=HTTP_200_OK)
+            copy=userseralizer.data.copy()
+            copy["password"]=passwordcryptgraf(copy["password"])
+            return Response(data=copy,status=HTTP_200_OK)
         except:
             return Response(data={"msg":"not found user"},status=HTTP_400_BAD_REQUEST)
     
@@ -75,7 +74,9 @@ class UserAdminDetail(APIView):
         token=self.__tokens_for_user(user=user)
     
         userserelizer:Userseralizer=Userseralizer(user)
-        return Response(data={"Token":token,"user":userserelizer.data})
+        copy=userserelizer.data.copy()
+        copy["password"]=passwordcryptgraf(copy["password"])
+        return Response(data={"Token":token,"user":copy})
     
 class UserListDetail(APIView):
     
@@ -97,7 +98,10 @@ class UserListDetail(APIView):
             userorganization=User.objects.all().filter(isactive=True,email__in=Subquery(organization))
             usertrue=User.objects.all().difference(userorganization)
             users=Userseralizer(usertrue,many=True)
-            return Response(data=users.data,status=HTTP_200_OK)
+            copy=users.data.copy()
+            for i in copy:
+                i["password"]=passwordcryptgraf(i["password"])
+            return Response(data=copy,status=HTTP_200_OK)
         except:
             return Response(data=[],status=HTTP_400_BAD_REQUEST)
     
