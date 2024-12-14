@@ -7,9 +7,6 @@ class Horary(models.Model):
     voluntarys=models.ManyToManyField(Voluntary,related_name="voluntarylist")
     
     def add_voluntary(self, voluntary):
-        """
-        Adiciona um voluntário à lista se não ultrapassar o limite máximo.
-        """
-        if self.voluntarys.count() >= self.max_voluntary_scale:
-            raise ValueError("O número máximo de voluntários para este horário já foi atingido.")
+        if self.max_voluntary_scale==-1:
+            raise ValueError("Escala cheia")
         self.voluntarys.add(voluntary)
