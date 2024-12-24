@@ -89,7 +89,7 @@ class UserListDetail(APIView):
         if user.is_valid():
             user.save()
         else:
-            return Response(data={"msg":"Bad Resquest"},status=HTTP_400_BAD_REQUEST)
+            return Response(data=user.error_messages,status=HTTP_400_BAD_REQUEST)
         return Response(data=user.data,status=HTTP_201_CREATED)
 
     def get(self,request)-> Response:
