@@ -32,6 +32,7 @@ class EventDetailListPost(APIView):
             organization=Organization.objects.get(user_id=copy["organizator"])
             organization.count+=1
             organization.save()
+
             eventquery=Event.objects.get(id=eventid)
             self.__create_scale_none(event=eventquery)
             return Response(data=event.data, status=HTTP_201_CREATED)
