@@ -16,8 +16,9 @@ class EventDetailListPost(APIView):
         enddatetieme:datetime=datetime.strptime(event.end.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ")
         scale=Scale.objects.create(event=event)
         while(begindatetime<enddatetieme):
-            horary=Horary.objects.create(datetime=begindatetime.isoformat().replace('+00:00', 'Z'),max_voluntary_scale=event.max_voluntary_per_horary)
-            scale.horarys.add(horary)
+            if event.bscale<=begindatetime<=event.escale:
+                horary=Horary.objects.create(datetime=begindatetime.isoformat().replace('+00:00', 'Z'),max_voluntary_scale=event.max_voluntary_per_horary)
+                scale.horarys.add(horary)
             begindatetime+=timedelta(hours=1)
         scale.save()
     
@@ -31,6 +32,7 @@ class EventDetailListPost(APIView):
             organization=Organization.objects.get(user_id=copy["organizator"])
             organization.count+=1
             organization.save()
+
             eventquery=Event.objects.get(id=eventid)
             self.__create_scale_none(event=eventquery)
             return Response(data=event.data, status=HTTP_201_CREATED)
