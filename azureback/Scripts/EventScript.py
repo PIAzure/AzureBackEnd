@@ -11,7 +11,7 @@ class EventScript:
         with open(banner,mode="rb") as f:
             data=self.__cliente.post("/events/",data={"description":description,"location":location,
                                                  "begin":begin,"banner":f,"max_particpant":max_particpant,"end":end,
-                                                 "max_voluntary_per_horary":max_voluntary_per_horary,"bscale":bscale,"escale":escale})
+                                                 "max_voluntary_per_horary":max_voluntary_per_horary,"bscale":bscale,"escale":escale,"organizator":organizator})
         return data.json()
     
     @dispatch(int)
@@ -21,6 +21,7 @@ class EventScript:
     
     @dispatch(str)
     def getevent(self,email:str)->JsonResponse:
-        data=self.__cliente.get(f"/events/event/organizator/{email}")
+        data=self.__cliente.get(f"/events/event/organizator/{email}/")
+        print(data.status_code)
         return data.json()
     

@@ -8,15 +8,20 @@ from datetime import datetime , timedelta
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from apiazure.Modelo.Scale import Scale
 from apiazure.Modelo.Horario import Horary
+import pytz as tz
 class EventDetailListPost(APIView):
     
     permission_classes=[AllowAny]
     def __create_scale_none(self,event:Event):
-        begindatetime:datetime=datetime.strptime(event.begin.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ")
-        enddatetieme:datetime=datetime.strptime(event.end.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ")
+        begindatetime:datetime=datetime.strptime(event.begin.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ").astimezone(tz=tz.utc)
+        enddatetieme:datetime=datetime.strptime(event.end.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ").astimezone(tz=tz.utc)
+        
+        escaledatetime:datetime=datetime.strptime(event.escale.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ").astimezone(tz=tz.utc)
+        bscaledatetieme:datetime=datetime.strptime(event.bscale.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ").astimezone(tz=tz.utc)
+        
         scale=Scale.objects.create(event=event)
         while(begindatetime<enddatetieme):
-            if event.bscale<=begindatetime<=event.escale:
+            if bscaledatetieme<=begindatetime and begindatetime <=escaledatetime:
                 horary=Horary.objects.create(datetime=begindatetime.isoformat().replace('+00:00', 'Z'),max_voluntary_scale=event.max_voluntary_per_horary)
                 scale.horarys.add(horary)
             begindatetime+=timedelta(hours=1)
