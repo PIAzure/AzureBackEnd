@@ -13,10 +13,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'azureback.settings')
 # Inicializa o Django
 django.setup()
 
-from UserScript import UserScript
+from OrganizationScript import OrganizationScript
 
 
 if __name__ == "__main__":
     
-    user=UserScript()
-    print(user.getuser())
+    user=OrganizationScript()
+    print(user.getorganization("guiguigui098@gmail.com"))

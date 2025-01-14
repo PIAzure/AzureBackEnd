@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from multipledispatch import dispatch
 class UserScript:
     
-    cliente=Client()
+    __cliente=Client()
     
     def createuser(self,email:str,name:str,password:str,
                    imagefield:str,isadmin:bool=False)->JsonResponse:
