@@ -19,12 +19,14 @@ class FollowPost(APIView):
         return Response(data=followseralizer.error_messages)
 
 class FollowDelete(APIView):
+    
     permission_classes=[AllowAny]
-    def delete(self,request,followid):
-        follow=Follow.objects.get(id=followid)
+
+    def delete(self,request,useremail,oremail):
+        follow=Follow.objects.get(user=useremail,organizator=oremail)
         unfollow=follow.delete()
         print(unfollow)
-        return Response(data={"msg":f"unfollow {unfollow}"})
+        return Response(data={"msg":f"unfollow"})
     
     def get(self,request,email):
         follow=Follow.objects.filter(organizator=email)
