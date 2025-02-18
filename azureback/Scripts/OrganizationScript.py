@@ -19,5 +19,5 @@ class OrganizationScript:
     
     @dispatch(str)
     def getorganization(self,email:str)->JsonResponse:
-        data=self.__cliente.get(f"/organization/{email}")
+        data=self.__cliente.get(f"/organization/{email}/")
         return data.json()   
