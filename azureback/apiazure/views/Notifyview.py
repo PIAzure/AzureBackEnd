@@ -16,4 +16,5 @@ class NotifyView(APIView):
         for i in  notifys:
             notifys_list.extend(i.notiys.all())
         serialized_notifys = NotifySeralizer(notifys_list, many=True).data
+        
         return Response(data=serialized_notifys,status=HTTP_200_OK)
