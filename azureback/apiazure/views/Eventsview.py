@@ -8,10 +8,20 @@ from datetime import datetime , timedelta
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from apiazure.Modelo.Scale import Scale
 from apiazure.Modelo.Horario import Horary
+from apiazure.Modelo.Notify import Notify
 import pytz as tz
+from apiazure.Modelo.Follows import Follow
 class EventDetailListPost(APIView):
     
     permission_classes=[AllowAny]
+    
+    def __send_notiy(self,organizator):
+        follows=Follow.objects.filter(organizator=organizator)
+        for i in follows:
+            notifys=Notify.objects.create(msg="novo evento criado por "+organizator)
+            notifys.save()
+            i.add_notiy(notifys)
+
     def __create_scale_none(self,event:Event):
         begindatetime:datetime=datetime.strptime(event.begin.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ").astimezone(tz=tz.utc)
         enddatetieme:datetime=datetime.strptime(event.end.isoformat().replace('+00:00', 'Z'),"%Y-%m-%dT%H:%M:%SZ").astimezone(tz=tz.utc)
@@ -40,6 +50,8 @@ class EventDetailListPost(APIView):
 
             eventquery=Event.objects.get(id=eventid)
             self.__create_scale_none(event=eventquery)
+            self.__send_notiy(organization.user.email)
+
             return Response(data=event.data, status=HTTP_201_CREATED)
         else:
             return Response(data={"msg": "BAD REQUEST"}, status=HTTP_400_BAD_REQUEST)

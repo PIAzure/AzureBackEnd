@@ -8,7 +8,11 @@ from django.db.models import UniqueConstraint
 class Follow(models.Model):
     organizator = models.ForeignKey(Organization, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    notiys=models.ManyToManyField(Notify)
 
+    def add_notiy(self,notiy:Notify):
+        self.notiys.add(notiy)
+    
     class Meta:
         constraints = [
             UniqueConstraint(fields=["organizator", "user"], name="unique_follow")
