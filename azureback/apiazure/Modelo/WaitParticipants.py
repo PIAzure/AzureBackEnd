@@ -1,6 +1,13 @@
+from apiazure.Modelo.Events import Event
 from django.db import models
-from apiazure.Modelo.Participants import Participant
+from apiazure.models import User
 
 class WaitParticipant(models.Model):
-    posision=models.AutoField(primary_key=True)
-    participant=models.ForeignKey(Participant)
+
+    id=models.AutoField(primary_key=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,on_delete=models.CASCADE)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'event'], name='unique_user_event_wait')
+        ]

@@ -1,4 +1,4 @@
-from rest_framework.serializers import serializers
+from rest_framework import serializers
 from apiazure.Modelo.Voluntary import Voluntary
 class WaitVoluntarySeralizer(serializers.ModelSerializer):
     

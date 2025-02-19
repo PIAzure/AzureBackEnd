@@ -1,6 +1,6 @@
-from rest_framework.serializers import serializers 
-from apiazure.Modelo.Participants import Participants
+from rest_framework import serializers 
+from apiazure.Modelo.WaitParticipants import WaitParticipant
 class WaitParticipantSeralizer(serializers.ModelSerializer):
     class Meta:
-        model=Participants
+        model=WaitParticipant
         fields="__all__"

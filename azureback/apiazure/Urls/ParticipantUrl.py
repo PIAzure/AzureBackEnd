@@ -6,4 +6,5 @@ urlpatterns = [
     path("/<int:id_participant>/delete",func.ParticipantsDetailsDelete.as_view(),name="sair de evento"),
     path("/event/<str:email>/",func.ParticipantDetailGetEmail.as_view(),name="get todos os eventos"),
     path("",func.ParticipantsDetailsPost.as_view(),name="entrar em evento"),
+    path("/wait/<str:eventid>/",func.WaitParticipantDetail.as_view())
 ]
