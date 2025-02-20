@@ -7,4 +7,4 @@ class VoluntarySeralizer(serializers.ModelSerializer):
     user=Userseralizer()
     class Meta:
         model=Voluntary
-        fields=["id","user"]
+        fields="__all__"

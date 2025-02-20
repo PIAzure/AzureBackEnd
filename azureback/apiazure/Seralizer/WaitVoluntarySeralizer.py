@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from apiazure.Modelo.Voluntary import Voluntary
+from apiazure.Modelo.WaitVoluntary import WaitVoluntary
 class WaitVoluntarySeralizer(serializers.ModelSerializer):
-    
     class Meta:
-        model=Voluntary
+        model=WaitVoluntary
         fields="__all__"
